@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Plagiarism Detector</title>
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background-color: #0a0a0a;
+      color: #00ffcc;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      background: #111;
+      border: 2px solid #00ffcc;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { box-shadow: 0 0 15px #00ffcc; }
+      to { box-shadow: 0 0 30px #ff00ff; }
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 2.5rem;
+      color: #ff00ff;
+      text-shadow: 0 0 15px #ff00ff, 0 0 30px #00ffcc;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    textarea, .upload-box {
+      flex: 1;
+      height: 250px;
+      background: #0f0f0f;
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 1rem;
+      color: #00ffcc;
+      resize: none;
+      outline: none;
+      font-family: 'Courier New', monospace;
+      box-shadow: inset 0 0 10px rgba(0, 255, 204, 0.3);
+      transition: 0.3s;
+    }
+
+    textarea:focus {
+      border-color: #ff00ff;
+      box-shadow: 0 0 15px #ff00ff, inset 0 0 20px rgba(255, 0, 255, 0.4);
+    }
+
+    .upload-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: #ff00ff;
+      border: 2px dashed #ff00ff;
+    }
+
+    .upload-box:hover {
+      background: rgba(255, 0, 255, 0.1);
+      box-shadow: 0 0 15px #ff00ff;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      font-size: 1.2rem;
+      background: linear-gradient(90deg, #00ffcc, #ff00ff);
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      color: #0a0a0a;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.6);
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px #ff00ff, 0 0 40px #00ffcc;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #0f0f0f;
+      border-radius: 10px;
+      border: 2px solid #ff00ff;
+      font-size: 1.2rem;
+      text-align: center;
+      text-shadow: 0 0 10px #ff00ff;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>⚡ AI Plagiarism Detector ⚡</h1>
+
+    <div class="input-row">
+      <textarea id="inputText" placeholder="Paste your text here..."></textarea>
+
+      <label class="upload-box" for="fileInput">
+        📂 Click or Drop File (TXT / PDF)
+      </label>
+      <input type="file" id="fileInput" accept=".txt,.pdf">
+    </div>
+
+    <button onclick="checkText()">Detect</button>
+    <div class="result" id="resultBox">The Result : </div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const textArea = document.getElementById("inputText");
+    const resultBox = document.getElementById("resultBox");
+
+    fileInput.addEventListener("change", function() {
+      const file = this.files[0];
+      if (!file) return;
+
+      if (file.type === "text/plain") {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          textArea.value = e.target.result;
+        };
+        reader.readAsText(file);
+      } else if (file.type === "application/pdf") {
+        textArea.value = "📄 PDF uploaded. Will be processed on backend.";
+      } else {
+        resultBox.innerHTML = "⚠️ Unsupported file type!";
+        resultBox.style.color = "#ffcc00";
+      }
+    });
+
+    function checkText() {
+      const text = textArea.value;
+      if (text.trim() === "") {
+        resultBox.innerHTML = "⚠️ Please enter or upload text!";
+        resultBox.style.color = "#ffcc00";
+        return;
+      }
+
+      // Placeholder (replace with backend API)
+      let isAI = Math.random() > 0.5;
+      if (isAI) {
+        resultBox.innerHTML = "🤖 This text looks AI-generated!";
+        resultBox.style.color = "#ff00ff";
+      } else {
+        resultBox.innerHTML = "📝 This text seems human-written!";
+        resultBox.style.color = "#00ffcc";
+      }
+    }
+  </script>
+</body>
+</html>
